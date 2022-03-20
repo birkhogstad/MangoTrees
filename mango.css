@@ -36,6 +36,10 @@
     border-color: black;
 }
 
+.counter {
+    font-size: 60px;
+}
+
 /* body {
     background-color: lightblue;
 

@@ -2,15 +2,12 @@
 
 var marked = 24
 var pinsRemaining = 33
-var pinsRemoved = 0
 var moveFromTile = null
 var moveFromTileId = 0
 
 let locations = [7, -7, -1, 1]
 let openTiles = []
 
-
-var multiplier = 1
 
 function generate() {
     let board = document.getElementById("board")
@@ -32,6 +29,49 @@ function generate() {
         }
     }
     document.getElementById(marked).classList.add("marked")
+}
+
+
+function removed() {
+    var potential = ""
+
+    if (pinsRemaining < 17) {
+        var outOfMoves = true
+        loop:
+        for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 7; j++) {
+                var thisId = i * 7 + j
+                var thisTile = document.getElementById(thisId)
+                if (!thisTile.classList.contains("white") && thisTile.classList.contains("pin")) {
+                    for (let k = 0; k < 4; k++) {
+                        var pot = thisId + locations[k] * 2
+
+                        if (pot % 7 != thisId % 7) {
+                            if (thisId % 7 < 2 && k == 2) {
+                                continue
+                            }
+                            if (thisId % 7 > 4 && k == 3) {
+                                continue
+                            }
+                        }
+
+                        if (pot > 0 && pot < 49) {
+
+                            if (!document.getElementById(pot).classList.contains("pin") && document.getElementById((thisId + pot) / 2).classList.contains("pin")) {
+                                outOfMoves = false
+                                break loop
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    if (outOfMoves) {
+        potential = " GAME OVER"
+    }
+
+    document.getElementById("counter").innerHTML = pinsRemaining + potential
 
 }
 
@@ -92,17 +132,17 @@ function removePrevious() {
         document.getElementById(tile).classList.remove("open")
     });
     moveFromTile = null
-    moveFromTileId = null
+    moveFromTileId = 0
     openTiles = []
 }
 
 
 function select() {
     var selectedTile = document.getElementById(marked)
-    if (pinsRemoved == 0) {
+    if (pinsRemaining == 33) {
         selectedTile.classList.remove("pin")
-        pinsRemoved++
         pinsRemaining--
+        document.getElementById("counter").innerHTML = pinsRemaining
         
         return
 
@@ -119,19 +159,22 @@ function select() {
     if (moveFromTile == null) {
         return
     }
-
+    
+    
     openTiles.forEach(tile => {
         if (tile == selectedTile.id) {
             moveFromTile.classList.remove("pin", "selected", "open")
             selectedTile.classList.add("pin")
             selectedTile.classList.remove("selected", "open")
+
+
             document.getElementById((marked + moveFromTileId)/2).classList.remove("pin")
-            pinsRemoved++
             pinsRemaining--
 
         }
     });
     removePrevious()
+    removed()
     
 }
 
