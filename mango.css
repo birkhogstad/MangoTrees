@@ -1,0 +1,42 @@
+.tile {
+    margin: 1px;
+    width: 80px;
+    height: 80px;
+    border-width: 5px;
+    border-color: white;
+
+
+    
+}
+
+.row {
+    align-items: center;
+}
+
+.white {
+    visibility: hidden;
+}
+
+
+.pin {
+    /* background:url('pin.png');
+    background-size: cover;   */ 
+    background-color: lightcoral;
+    border-radius: 50px;
+}
+.selected {
+    background-color: lightblue;
+}
+
+.open {
+    background-color: lightblue;
+}
+
+.marked {
+    border-color: black;
+}
+
+/* body {
+    background-color: lightblue;
+
+} */
