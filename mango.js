@@ -4,9 +4,11 @@ var marked = 24
 var pinsRemaining = 33
 var moveFromTile = null
 var moveFromTileId = 0
+var gameOver = false
 
 let locations = [7, -7, -1, 1]
 let openTiles = []
+
 
 
 function generate() {
@@ -69,6 +71,7 @@ function removed() {
     }
     if (outOfMoves) {
         potential = " GAME OVER"
+        gameOver = true
     }
 
     document.getElementById("counter").innerHTML = pinsRemaining + potential
@@ -210,28 +213,30 @@ function getPossibleIds() {
 
 
 document.onkeydown = function () {
-    switch(window.event.keyCode) {
-        case 37:
-        case 65:
-            move('w')
-            break
-        case 38:
-        case 87:
-            move('n')
-            break
-        case 39:
-        case 68:
-            move('e')
-            break
-        case 40:
-        case 83:
-            move('s')
-            break        
-        case 13:
-        case 32:
-            select()
-            break
+    if (! gameOver) {
         
+        switch(window.event.keyCode) {
+            case 37:
+            case 65:
+                move('w')
+                break
+            case 38:
+            case 87:
+                move('n')
+                break
+            case 39:
+            case 68:
+                move('e')
+                break
+            case 40:
+            case 83:
+                move('s')
+                break        
+            case 13:
+            case 32:
+                select()
+                break
+        }
     }
 
 }
